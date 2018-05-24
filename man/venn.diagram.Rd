@@ -18,7 +18,8 @@ venn.diagram(x, filename, height = 3000, width = 3000, resolution =
     lower.tail = TRUE, log.to.file = TRUE,
     log.threshold = if(log.to.file)
       futile.logger::INFO
-      else futile.logger::FATAL...
+      else futile.logger::FATAL,
+    ...
     )
 }
 \arguments{
