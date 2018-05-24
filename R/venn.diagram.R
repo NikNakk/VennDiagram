@@ -43,6 +43,8 @@ venn.diagram <- function(
 	hyper.test = FALSE,
 	total.population = NULL,
 	lower.tail = TRUE,
+	log.to.file = TRUE,
+	log.threshold = if(log.to.file) futile.logger::INFO else futile.logger::FATAL,
 	...
 	) {
 	
@@ -50,12 +52,19 @@ venn.diagram <- function(
 	time.string = gsub(":", "-", gsub(" ", "_", as.character(Sys.time())))
 	
 	#Initialize the logger to output to file
-	if(!is.null(filename)){
-		flog.appender(appender.file(paste0(filename,".",time.string,".log")), name='VennDiagramLogger')
+	if(log.to.file) {
+  	if(!is.null(filename)){
+  		flog.appender(appender.file(paste0(filename,".",time.string,".log")), name='VennDiagramLogger')
+  	}
+  	else{
+  		flog.appender(appender.file(paste0("VennDiagram",time.string,".log")), name='VennDiagramLogger')
+  	}
 	}
 	else{
-		flog.appender(appender.file(paste0("VennDiagram",time.string,".log")), name='VennDiagramLogger')
+	  flog.appender(appender.console(), name='VennDiagramLogger')
 	}
+	
+	flog.threshold(log.threshold,name='VennDiagramLogger')
 	
 	#Log the parameters the function was called with
 	out.list = as.list(sys.call())
